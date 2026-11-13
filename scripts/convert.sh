@@ -15,7 +15,8 @@ for rule in "${rules[@]}"; do
   echo "Converting $name"
   sigma convert -t lucene -p ecs_windows "$rule" > "build/lucene/$name.txt"
   sigma convert -t eql    -p ecs_windows "$rule" > "build/eql/$name.txt"
-  sigma convert -t esql   -p ecs_windows "$rule" > "build/esql/$name.txt"
+  # ecs_windows isn't registered for the esql target, but the ECS field mapping is identical.
+  sigma convert -t esql   -p ecs_windows --disable-pipeline-check "$rule" > "build/esql/$name.txt"
   sigma convert -t kusto  -p microsoft_xdr "$rule" > "build/kql/$name.txt"
 done
 
