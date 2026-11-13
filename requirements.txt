@@ -1,0 +1,5 @@
+sigma-cli
+pySigma-backend-elasticsearch
+pySigma-backend-kusto
+PyYAML
+# Once CI is green, pin exact versions (pip freeze) so rule output stays reproducible.

@@ -1,0 +1,32 @@
+title: Run Key Persistence Added via reg.exe
+id: e97dab9d-83de-4f18-a249-fcf84f0afa7e
+status: experimental
+description: |
+  Detects reg.exe adding a value under a Run or RunOnce key, a common way to make
+  a payload start on every logon.
+references:
+  - https://attack.mitre.org/techniques/T1547/001/
+  - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1547.001/T1547.001.md
+author: Ekin
+date: 2026-11-03
+tags:
+  - attack.persistence
+  - attack.t1547.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith: '\reg.exe'
+    - OriginalFileName: 'reg.exe'
+  selection_action:
+    CommandLine|contains: ' add '
+  selection_key:
+    CommandLine|contains:
+      - '\CurrentVersion\Run'
+      - '\CurrentVersion\Policies\Explorer\Run'
+  condition: all of selection_*
+falsepositives:
+  - Software installers and admin scripts that register startup items
+  - Baseline legitimate values and exclude by value name or data path
+level: medium
